@@ -1,34 +1,15 @@
 public with sharing class ShoppingCartControllerLightning {
   @AuraEnabled(cacheable=true)
   public static List<Product2> getProducts() {
-    return [
-      SELECT
-        Id,
-        Name,
-        ProductCode,
-        Description,
-        PricePerUnit__c,
-        QuantityAvailable__c
-      FROM Product2
-      WHERE QuantityAvailable__c > 0
-    ];
+    return ProductSelector.newInstance().getAllAvailableProducts()
   }
 
   @AuraEnabled
   public static void placeOrder(Map<String, Integer> cartMap) {
     Set<String> ids = cartMap.keySet();
     Decimal totalPrice = 0;
-    List<Product2> productToUpdate = [
-      SELECT
-        Id,
-        Name,
-        ProductCode,
-        Description,
-        PricePerUnit__c,
-        QuantityAvailable__c
-      FROM Product2
-      WHERE QuantityAvailable__c > 0 AND Id IN :ids
-    ];
+    List<Product2> productToUpdate = ProductSelector.newInstance().selectByIds(new List<Id>(ids));
+
     fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
       new List<Schema.SObjectType>{
         Product2.SObjectType,
