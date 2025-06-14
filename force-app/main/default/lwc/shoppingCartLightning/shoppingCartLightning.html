@@ -1,26 +1,41 @@
 <template>
-    <div hidden = {productBlock}>
-        <c-product-block>
-        </c-product-block>
-        <div class="slds-float_right">
-            <lightning-button variant="neutral" label="Go to Cart"  onclick={showCart}></lightning-button>
-        </div>
+  <div lwc:if={displayState.productBlock}>
+    <c-product-block products={products}> </c-product-block>
+    <div class="slds-float_right">
+      <lightning-button
+        variant="neutral"
+        label="Go to Cart"
+        onclick={showCart}
+      ></lightning-button>
     </div>
-    <div hidden = {cartBlock}>
-        <c-cart-block>
-        </c-cart-block>
-        <div class="slds-float_left">
-            <lightning-button variant="neutral" label="Show All Products"  onclick={showProducts}></lightning-button>
-        </div>
-        <div class="slds-float_right">
-            <lightning-button variant="neutral" label="CheckOut"  onclick={showInvoice}></lightning-button>
-        </div>
+  </div>
+  <div lwc:elseif={displayState.cartBlock}>
+    <c-cart-block> </c-cart-block>
+    <div class="slds-float_left">
+      <lightning-button
+        variant="neutral"
+        label="Show All Products"
+        onclick={showProducts}
+      ></lightning-button>
     </div>
-    <div if:false={invoiceBlock}>
-        <b class="slds-align_absolute-center">Invoice Number  : {invoiceNumber}</b><br/>
-        <c-invoice-block></c-invoice-block>
-        <div class="slds-float_left">
-            <lightning-button variant="neutral" label="Go to Cart"  onclick={showCart}></lightning-button>
-        </div>
+    <div class="slds-float_right">
+      <lightning-button
+        variant="neutral"
+        label="CheckOut"
+        onclick={showInvoice}
+      ></lightning-button>
     </div>
+  </div>
+  <div lwc:elseif={displayState.invoiceBlock}>
+    <b class="slds-align_absolute-center">Invoice Number : {invoiceNumber}</b
+    ><br />
+    <c-invoice-block></c-invoice-block>
+    <div class="slds-float_left">
+      <lightning-button
+        variant="neutral"
+        label="Go to Cart"
+        onclick={showCart}
+      ></lightning-button>
+    </div>
+  </div>
 </template>

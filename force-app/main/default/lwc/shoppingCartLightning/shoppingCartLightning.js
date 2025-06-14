@@ -1,21 +1,38 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, wire } from "lwc";
+import getProducts from "@salesforce/apex/ShoppingCartControllerLightning.getProducts";
 
 export default class ShoppingCart extends LightningElement {
-    productBlock = false;
-    cartBlock = true;
-    invoiceBlock = true;
-    invoiceNumber = Math.ceil(Math.random()*1000000);
-    showCart = function () {
-      this.productBlock = true;
-      this.cartBlock = false;
-      this.invoiceBlock = true;
+  error;
+  allProductMap = {};
+  displayState = {
+    productBlock: false,
+    cartBlock: false,
+    invoiceBlock: false
+  };
+
+  @wire(getProducts)
+  getProductsCallback({ error, data }) {
+    if (data) {
+      data.forEach((record) => {
+        const copy = JSON.parse(JSON.stringify(record));
+        copy.selectedQuantity = 0;
+        this.allProductMap[record.Id] = copy;
+      });
+      this.showProductBlock();
+    } else if (error) {
+      this.error = error;
     }
-    showProducts = function(){
-      this.productBlock = false;
-      this.cartBlock = true;
-    }
-    showInvoice = function(){
-      this.invoiceBlock = false;
-      this.cartBlock = true;
-    }
+  }
+
+  showProductBlock() {
+    this.displayState = {
+      productBlock: true,
+      cartBlock: false,
+      invoiceBlock: false
+    };
+  }
+
+  get products() {
+    return [...Object.values(this.allProductMap)];
+  }
 }
