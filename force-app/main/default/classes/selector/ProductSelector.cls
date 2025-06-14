@@ -1,4 +1,12 @@
 public with sharing class ProductSelector implements ProductISelector {
+  private static Dependency impl = new Dependency(
+    ProductSelector.class
+  );
+
+  public static ProductISelector newInstance() {
+    return (ProductISelector) impl.newInstance();
+  }
+
   public List<Product2> getAllAvailableProducts() {
     return [
       SELECT
