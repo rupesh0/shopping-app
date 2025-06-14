@@ -1,0 +1,22 @@
+<template>
+    <div style="height: 250px">
+    <lightning-datatable
+        key-field="id"
+        data={selectedProducts}
+        show-row-number-column
+        hide-checkbox-column
+        columns={fields}
+        sorted-by={sortBy}
+        sorted-direction={sortDirection}
+        onsort={handleSortResult}>
+    </lightning-datatable>
+    </div>
+    <div class ="slds-float_right">
+            Total Price : {totalPrice}
+    </div><br/>
+    <div class="slds-align_absolute-center">
+        <lightning-button variant="neutral" label="Place Order"  onclick={placeOrder}></lightning-button>
+    </div>
+    
+    
+</template>

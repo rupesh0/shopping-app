@@ -1,0 +1,19 @@
+<template>
+    <lightning-card  variant="Narrow"  title="Cart Item" icon-name="custom:custom23">
+        <div style="height: 250px">
+        <lightning-datatable
+            key-field="Id"
+            data={cartItems}
+            hide-checkbox-column
+            columns={fields}
+            onsave={updateCart}
+            draft-values={draftValues}
+            onrowaction={deleteFromCart}>
+        </lightning-datatable>
+        </div>
+        <div hidden = {noCartItems}>
+            <b class="slds-align_absolute-center">No Products In Carts</b> 
+        </div>
+        
+    </lightning-card>
+</template>

@@ -1,0 +1,63 @@
+public with sharing class ShoppingCartControllerLightning {
+  @AuraEnabled(cacheable=true)
+  public static List<Product2> getProducts() {
+    return [
+      SELECT
+        Id,
+        Name,
+        ProductCode,
+        Description,
+        PricePerUnit__c,
+        QuantityAvailable__c
+      FROM Product2
+      WHERE QuantityAvailable__c > 0
+    ];
+  }
+
+  @AuraEnabled
+  public static void placeOrder(Map<String, Integer> cartMap) {
+    Set<String> ids = cartMap.keySet();
+    Decimal totalPrice = 0;
+    List<Product2> productToUpdate = [
+      SELECT
+        Id,
+        Name,
+        ProductCode,
+        Description,
+        PricePerUnit__c,
+        QuantityAvailable__c
+      FROM Product2
+      WHERE QuantityAvailable__c > 0 AND Id IN :ids
+    ];
+    fflib_SObjectUnitOfWork uow = new fflib_SObjectUnitOfWork(
+      new List<Schema.SObjectType>{
+        Product2.SObjectType,
+        PurchaseOrder__c.SObjectType,
+        PurchaseOrderLineItems__c.SObjectType
+      }
+    );
+    for (Product2 product : productToUpdate) {
+      product.QuantityAvailable__c =
+        product.QuantityAvailable__c - cartMap.get(product.Id);
+      totalPrice += cartMap.get(product.Id) * product.PricePerUnit__c;
+    }
+    uow.registerDirty(productToUpdate);
+    PurchaseOrder__c productOrder = new PurchaseOrder__c(
+      OrderPrice__c = totalPrice,
+      OrderStatus__c = 'Pending'
+    );
+    uow.registerNew(productOrder);
+    for (String productId : cartMap.keySet()) {
+      PurchaseOrderLineItems__c lineItem = new PurchaseOrderLineItems__c(
+        Product__c = productId,
+        quantity__c = cartMap.get(productId)
+      );
+      uow.registerNew(
+        lineItem,
+        PurchaseOrderLineItems__c.PurchaseOrder__c,
+        productOrder
+      );
+    }
+    uow.commitWork();
+  }
+}

@@ -1,0 +1,26 @@
+<template>
+    <lightning-card  variant="wide"  title="Products" icon-name="standard:product">
+        <div>
+            <input placeholder="Search Products..." onchange={searchProduct} ></input>
+            <lightning-button label="Add To Cart"  onclick={addToCart} ></lightning-button>
+        </div>
+        <div style="height: 250px">
+            <lightning-datatable
+                key-field="Id"
+                data={searchedProduct}
+                columns={fields}
+                sorted-by={sortBy}
+                sorted-direction={sortDirection}
+                onsort={handleSortResult}
+                selected-rows={selectedRows}              
+                >
+            </lightning-datatable>
+            <div hidden = {noRecords}  >
+                <b class="slds-align_absolute-center">No Products Found</b> 
+            </div>
+        </div>
+        <template if:true = {error}>
+            An Error Occures While Fetching Data 
+        </template>
+    </lightning-card>
+</template>
