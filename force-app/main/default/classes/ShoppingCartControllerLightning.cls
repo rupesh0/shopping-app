@@ -5,8 +5,8 @@ public with sharing class ShoppingCartControllerLightning {
   }
 
   @AuraEnabled
-  public static void placeOrder(Map<String, Integer> cartMap) {
-    Set<String> ids = cartMap.keySet();
+  public static void placeOrder(Map<Id, Integer> cartMap) {
+    Set<Id> ids = cartMap.keySet();
     fflib_SObjectUnitOfWork uow = getUnitOfWork();
     List<Product2> productToUpdate = ProductSelector.newInstance()
       .selectByIds(new List<Id>(ids));
@@ -25,7 +25,7 @@ public with sharing class ShoppingCartControllerLightning {
     );
     uow.registerNew(productOrder);
 
-    for (String productId : cartMap.keySet()) {
+    for (Id productId : cartMap.keySet()) {
       PurchaseOrderLineItems__c lineItem = new PurchaseOrderLineItems__c(
         Product__c = productId,
         quantity__c = cartMap.get(productId)
