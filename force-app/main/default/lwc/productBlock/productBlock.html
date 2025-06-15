@@ -1,8 +1,8 @@
 <template>
-    <lightning-card  variant="wide"  title="Products" icon-name="standard:product">
+    <lightning-card  variant="wide"  title={labels.common_label_products} icon-name="standard:product">
         <div>
-            <input placeholder="Search Products..." onchange={searchProduct} ></input>
-            <lightning-button label="Add To Cart"  onclick={addToCart} ></lightning-button>
+            <input placeholder={labels.search_product_placeholder} onchange={searchProduct} ></input>
+            <lightning-button label={labels.common_label_add_to_cart}  onclick={addToCart} ></lightning-button>
         </div>
         <div style="height: 250px">
             <lightning-datatable
@@ -13,13 +13,7 @@
                 sorted-direction={sortDirection}
                 onsort={handleSortResult}            
                 >
-            </lightning-datatable>
-            <div hidden = {noRecords}  >
-                <b class="slds-align_absolute-center">No Products Found</b> 
-            </div>
-        </div>
-        <template if:true = {error}>
-            An Error Occures While Fetching Data 
-        </template>
+            </lightning-datatable>  
+        </div>  
     </lightning-card>
 </template>

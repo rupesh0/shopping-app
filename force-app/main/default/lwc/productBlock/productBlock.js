@@ -44,14 +44,14 @@ export default class ProductBlock extends LightningElement {
         product.selectedQuantity++;
         const event = new ShowToastEvent({
           title: product.Name,
-          message: "Added to cart",
+          message: this.labels.common_label_added_to_cart,
           variant: "success"
         });
         this.dispatchEvent(event);
       } else {
         const event = new ShowToastEvent({
           title: product.Name,
-          message: "Out Of Stock",
+          message: this.labels.common_label_out_of_stock,
           variant: "error"
         });
         this.dispatchEvent(event);
@@ -80,11 +80,17 @@ export default class ProductBlock extends LightningElement {
     return this.products;
   }
 
-  get noRecords() {
-    return this.productsToDisplay.length;
-  }
-
   get grid() {
     return this.template.querySelector("lightning-datatable");
+  }
+
+  get labels() {
+    return {
+      common_label_products : 'Products',
+      common_label_add_to_cart: 'Add to cart',
+      common_label_out_of_stock: 'Out of stock',
+      common_label_added_to_cart : 'Added to cart',
+      search_product_placeholder : 'Search Products...'
+    }
   }
 }
