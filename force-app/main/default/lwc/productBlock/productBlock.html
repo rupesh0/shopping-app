@@ -3,6 +3,14 @@
     toolbar-title={labels.common_label_products}
     toolbar-sub-title={toolbarSubTitle}
   >
+    <div slot="upperRowItems">
+      <lightning-button
+        variant="brand"
+        label={labels.common_label_go_to_cart}
+        onclick={goToCart}
+      ></lightning-button>
+    </div>
+
     <div slot="lowerRowItems">
       <ul class="slds-button-group-list">
         <li>
