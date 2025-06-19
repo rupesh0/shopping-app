@@ -1,0 +1,38 @@
+<template>
+  <div class="slds-page-header">
+    <div class="slds-page-header__row">
+      <div class="slds-page-header__col-title">
+        <div class="slds-page-header__name">
+          <div class="slds-page-header__name-title">
+            <h1>
+              <span class="slds-page-header__title slds-truncate" title={title}
+                >{toolbarTitle}</span
+              >
+            </h1>
+          </div>
+        </div>
+      </div>
+      <div class="slds-page-header__col-actions">
+        <div class="slds-page-header__controls">
+          <div class="slds-page-header__control">
+            <slot name="upperRowItems"></slot>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slds-page-header__row">
+      <div class="slds-page-header__col-meta">
+        <p class="slds-page-header__meta-text">
+          <span>{toolbarSubTitle}</span>
+        </p>
+      </div>
+      <div class="slds-page-header__col-controls">
+        <div class="slds-page-header__controls">
+          <slot name="lowerRowItems"></slot>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+</template>
