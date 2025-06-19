@@ -1,19 +1,36 @@
 <template>
-    <lightning-card  variant="wide"  title={labels.common_label_products} icon-name="standard:product">
-        <div>
-            <input placeholder={labels.search_product_placeholder} onchange={searchProduct} ></input>
-            <lightning-button label={labels.common_label_add_to_cart}  onclick={addToCart} ></lightning-button>
-        </div>
-        <div style="height: 250px">
-            <lightning-datatable
-                key-field="Id"
-                data={productsToDisplay}
-                columns={columns}
-                sorted-by={sortBy}
-                sorted-direction={sortDirection}
-                onsort={handleSortResult}            
-                >
-            </lightning-datatable>  
-        </div>  
-    </lightning-card>
+  <c-toolbar
+    toolbar-title={labels.common_label_products}
+    toolbar-sub-title={toolbarSubTitle}
+  >
+    <div slot="lowerRowItems">
+      <ul class="slds-button-group-list">
+        <li>
+          <lightning-input
+            variant="label-hidden"
+            type="search"
+            onkeyup={searchProduct}
+            placeholder={labels.search_product_placeholder}
+          ></lightning-input>
+        </li>
+        <li class="slds-page-header__control">
+          <lightning-button
+            label={labels.common_label_add_to_cart}
+            onclick={addToCart}
+          ></lightning-button>
+        </li>
+      </ul>
+    </div>
+  </c-toolbar>
+  <div style="height: 250px">
+    <lightning-datatable
+      key-field="Id"
+      data={productsToDisplay}
+      columns={columns}
+      sorted-by={sortBy}
+      sorted-direction={sortDirection}
+      onsort={handleSortResult}
+    >
+    </lightning-datatable>
+  </div>
 </template>

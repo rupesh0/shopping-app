@@ -1,6 +1,7 @@
 import { LightningElement, api } from "lwc";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { COLUMNS } from "./constants";
+import { stringFormat } from "c/utils";
 
 export default class ProductBlock extends LightningElement {
   @api
@@ -84,8 +85,16 @@ export default class ProductBlock extends LightningElement {
     return this.template.querySelector("lightning-datatable");
   }
 
+  get toolbarSubTitle() {
+    return stringFormat(
+      this.labels.common_label_x_items,
+      this.productsToDisplay.length
+    );
+  }
+
   get labels() {
     return {
+      common_label_x_items: '{0} items',
       common_label_products : 'Products',
       common_label_add_to_cart: 'Add to cart',
       common_label_out_of_stock: 'Out of stock',
