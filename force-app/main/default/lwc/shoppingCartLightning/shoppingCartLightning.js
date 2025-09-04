@@ -1,9 +1,13 @@
 import { LightningElement, wire } from "lwc";
+import { ShowToastEvent } from "lightning/platformShowToastEvent";
+
 import getProducts from "@salesforce/apex/ShoppingCartController.getProducts";
+import placeOrder from "@salesforce/apex/ShoppingCartController.placeOrder";
 
 export default class ShoppingCart extends LightningElement {
   products = [];
   error;
+  orderId;
   displayState = {
     productBlock: false,
     cartBlock: false,
@@ -34,9 +38,29 @@ export default class ShoppingCart extends LightningElement {
     this.updateView(true, false, false);
   }
 
-  placeOrder({ detail }) {
-    this.updateSelectedProducts(detail.selectedProducts);
-    this.updateView(false, false, true);
+  async placeOrder({ detail }) {
+    const selectedIdToQuantityMap = {};
+    detail.selectedProducts.forEach((product) => {
+      selectedIdToQuantityMap[product.Id] = product.selectedQuantity;
+    });
+
+    try {
+      this.orderId = await placeOrder({
+        cartMap: selectedIdToQuantityMap
+      });
+
+      this.dispatchEvent(
+        new ShowToastEvent({
+          message: this.labels.order_placed,
+          variant: "success"
+        })
+      );
+      this.updateView(false, false, true);
+    } catch (error) {
+      this.dispatchEvent(
+        new ShowToastEvent({ message: error.message, variant: "error" })
+      );
+    }
   }
 
   updateSelectedProducts(selectedProducts) {
@@ -64,5 +88,11 @@ export default class ShoppingCart extends LightningElement {
 
   get cartProducts() {
     return this.products.filter((product) => product.selectedQuantity > 0);
+  }
+
+  get labels() {
+    return {
+      order_placed: "Order Placed"
+    };
   }
 }

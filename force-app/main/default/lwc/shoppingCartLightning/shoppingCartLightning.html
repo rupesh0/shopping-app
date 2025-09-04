@@ -12,7 +12,7 @@
       ></c-cart-block>
     </div>
     <div lwc:elseif={displayState.invoiceBlock}>
-      <c-invoice-block></c-invoice-block>
+      <c-invoice-block order-id={orderId}></c-invoice-block>
     </div>
   </article>
 </template>

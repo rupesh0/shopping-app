@@ -5,7 +5,7 @@ public with sharing class ShoppingCartController {
   }
 
   @AuraEnabled
-  public static void placeOrder(Map<Id, Integer> cartMap) {
+  public static Id placeOrder(Map<Id, Integer> cartMap) {
     Set<Id> ids = cartMap.keySet();
     fflib_SObjectUnitOfWork uow = getUnitOfWork();
     List<Product2> productToUpdate = ProductSelector.newInstance()
@@ -37,6 +37,8 @@ public with sharing class ShoppingCartController {
       );
     }
     uow.commitWork();
+
+    return productOrder.Id;
   }
 
   private static fflib_SObjectUnitOfWork getUnitOfWork() {
