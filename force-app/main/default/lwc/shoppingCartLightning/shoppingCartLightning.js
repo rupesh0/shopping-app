@@ -2,9 +2,8 @@ import { LightningElement, wire } from "lwc";
 import getProducts from "@salesforce/apex/ShoppingCartController.getProducts";
 
 export default class ShoppingCart extends LightningElement {
+  products = [];
   error;
-  allProductMap = {};
-  cartProducts = [];
   displayState = {
     productBlock: false,
     cartBlock: false,
@@ -14,39 +13,56 @@ export default class ShoppingCart extends LightningElement {
   @wire(getProducts)
   getProductsCallback({ error, data }) {
     if (data) {
-      data.forEach((record) => {
+      this.products = data.map((record) => {
         const copy = JSON.parse(JSON.stringify(record));
         copy.selectedQuantity = 0;
-        this.allProductMap[record.Id] = copy;
+        return copy;
       });
-      this.showProductBlock();
+      this.updateView(true, false, false);
     } else if (error) {
       this.error = error;
     }
   }
 
   goToCart({ detail }) {
-    this.cartProducts = detail.selectedProducts;
-    this.showCartBlock();
+    this.updateSelectedProducts(detail.selectedProducts);
+    this.updateView(false, true, false);
   }
 
-  showProductBlock() {
+  goToProducts({ detail }) {
+    this.updateSelectedProducts(detail.selectedProducts);
+    this.updateView(true, false, false);
+  }
+
+  placeOrder({ detail }) {
+    this.updateSelectedProducts(detail.selectedProducts);
+    this.updateView(false, false, true);
+  }
+
+  updateSelectedProducts(selectedProducts) {
+    const selectedIdToQuantityMap = {};
+    selectedProducts.forEach((product) => {
+      selectedIdToQuantityMap[product.Id] = product.selectedQuantity;
+    });
+
+    this.products.forEach((product) => {
+      if (selectedIdToQuantityMap[product.Id]) {
+        product.selectedQuantity = selectedIdToQuantityMap[product.Id];
+      } else {
+        product.selectedQuantity = 0;
+      }
+    });
+  }
+
+  updateView(productBlock, cartBlock, invoiceBlock) {
     this.displayState = {
-      productBlock: true,
-      cartBlock: false,
-      invoiceBlock: false
+      productBlock,
+      cartBlock,
+      invoiceBlock
     };
   }
 
-  showCartBlock() {
-    this.displayState = {
-      productBlock: false,
-      cartBlock: true,
-      invoiceBlock: false
-    };
-  }
-
-  get products() {
-    return [...Object.values(this.allProductMap)];
+  get cartProducts() {
+    return this.products.filter((product) => product.selectedQuantity > 0);
   }
 }

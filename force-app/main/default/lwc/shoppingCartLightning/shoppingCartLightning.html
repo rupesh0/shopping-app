@@ -5,7 +5,11 @@
       </c-product-block>
     </div>
     <div lwc:elseif={displayState.cartBlock}>
-      <c-cart-block products={cartProducts}> </c-cart-block>
+      <c-cart-block
+        products={cartProducts}
+        ongotoproducts={goToProducts}
+        onplaceorder={placeOrder}
+      ></c-cart-block>
     </div>
     <div lwc:elseif={displayState.invoiceBlock}>
       <c-invoice-block></c-invoice-block>
