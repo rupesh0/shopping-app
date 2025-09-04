@@ -1,9 +1,10 @@
 import { LightningElement, wire } from "lwc";
-import getProducts from "@salesforce/apex/ShoppingCartControllerLightning.getProducts";
+import getProducts from "@salesforce/apex/ShoppingCartController.getProducts";
 
 export default class ShoppingCart extends LightningElement {
   error;
   allProductMap = {};
+  cartProducts = [];
   displayState = {
     productBlock: false,
     cartBlock: false,
@@ -24,10 +25,23 @@ export default class ShoppingCart extends LightningElement {
     }
   }
 
+  goToCart({ detail }) {
+    this.cartProducts = detail.selectedProducts;
+    this.showCartBlock();
+  }
+
   showProductBlock() {
     this.displayState = {
       productBlock: true,
       cartBlock: false,
+      invoiceBlock: false
+    };
+  }
+
+  showCartBlock() {
+    this.displayState = {
+      productBlock: false,
+      cartBlock: true,
       invoiceBlock: false
     };
   }

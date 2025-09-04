@@ -1,10 +1,11 @@
 <template>
   <article class="slds-card">
     <div lwc:if={displayState.productBlock}>
-      <c-product-block products={products}> </c-product-block>
+      <c-product-block products={products} ongotocart={goToCart}>
+      </c-product-block>
     </div>
     <div lwc:elseif={displayState.cartBlock}>
-      <c-cart-block> </c-cart-block>
+      <c-cart-block products={cartProducts}> </c-cart-block>
     </div>
     <div lwc:elseif={displayState.invoiceBlock}>
       <c-invoice-block></c-invoice-block>
