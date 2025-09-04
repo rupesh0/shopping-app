@@ -1,4 +1,4 @@
-public with sharing class ShoppingCartControllerLightning {
+public with sharing class ShoppingCartController {
   @AuraEnabled(cacheable=true)
   public static List<Product2> getProducts() {
     return ProductSelector.newInstance().getAllAvailableProducts();
