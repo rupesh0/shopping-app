@@ -2,6 +2,7 @@ import { api, LightningElement } from "lwc";
 import { stringFormat } from "c/utils";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { COLUMNS } from "./constants";
+import { GoToProductsEvent, PlaceOrderEvent } from "./events";
 
 export default class CartBlock extends LightningElement {
   @api get products() {
@@ -64,9 +65,21 @@ export default class CartBlock extends LightningElement {
     this.grid.draftValues = [];
   }
 
-  goToProducts() {}
+  goToProducts() {
+    this.dispatchEvent(new GoToProductsEvent(this.products));
+  }
 
-  placeOrder() {}
+  placeOrder() {
+    if (this.products.length === 0) {
+      const event = new ShowToastEvent({
+        message: this.labels.empty_cart,
+        variant: "error"
+      });
+      this.dispatchEvent(event);
+    } else {
+      this.dispatchEvent(new PlaceOrderEvent(this.products));
+    }
+  }
 
   get grid() {
     return this.template.querySelector("lightning-datatable");
@@ -92,7 +105,8 @@ export default class CartBlock extends LightningElement {
       invalid_negative_quantity: "Selected Quantity Shoud Be greater than 0",
       invalid_greater_than_available_quantity:
         "Selected Quantity Shoud Be less than Available Quantity",
-      product_quantity_updated: "Product Quantity Updated"
+      product_quantity_updated: "Product Quantity Updated",
+      empty_cart: "Cart is empty"
     };
   }
 }
