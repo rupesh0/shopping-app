@@ -22,7 +22,7 @@
     </div>
   </c-toolbar>
 
-  <div style="height: 250px">
+  <div style="max-height: 250px">
     <lightning-datatable
       key-field="Id"
       data={products}
@@ -32,5 +32,10 @@
       onrowaction={deleteFromCart}
     >
     </lightning-datatable>
+  </div>
+  <div class="slds-m-top_medium slds-m-top_medium slds-text-align_center">
+    <span class="slds-text-heading_medium slds-m-left_small"
+      >{labels.common_label_total_amount} {totalAmount}</span
+    >
   </div>
 </template>

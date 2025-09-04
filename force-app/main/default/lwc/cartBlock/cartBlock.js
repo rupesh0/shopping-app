@@ -89,6 +89,12 @@ export default class CartBlock extends LightningElement {
     return COLUMNS;
   }
 
+  get totalAmount() {
+    return this._products.reduce((acc, product) => {
+      return acc + product.selectedQuantity * product.PricePerUnit__c;
+    }, 0);
+  }
+
   get toolbarSubTitle() {
     return stringFormat(
       this.labels.common_label_x_items,
@@ -106,7 +112,8 @@ export default class CartBlock extends LightningElement {
       invalid_greater_than_available_quantity:
         "Selected Quantity Shoud Be less than Available Quantity",
       product_quantity_updated: "Product Quantity Updated",
-      empty_cart: "Cart is empty"
+      empty_cart: "Cart is empty",
+      common_label_total_amount: "Total Amount: "
     };
   }
 }
