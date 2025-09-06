@@ -1,36 +1,43 @@
 <template>
-  <div class="slds-align_absolute-center heading">{labels.order_summary}</div>
+  <div class="slds-card">
+    <div class="slds-align_absolute-center heading">{labels.order_summary}</div>
 
-  <lightning-accordion
-    active-section-name={activeSections}
-    allow-multiple-sections-open
-  >
-    <lightning-accordion-section name="details" label={labels.order_details}>
-      <div class="slds-var-p-horizontal_large slds-grid slds-wrap slds-gutters">
-        <div class="slds-col slds-size_1-of-2">
-          {labels.order_name} : {purchaseOrderData.label}
-        </div>
-        <div class="slds-col slds-size_1-of-2">
-          {labels.order_status} : {purchaseOrderData.status}
-        </div>
-        <div class="slds-col slds-size_1-of-2">
-          {labels.order_total_amount} : {purchaseOrderData.orderPrice}
-        </div>
-        <div class="slds-col slds-size_1-of-2">
-          {labels.number_of_products} : {purchaseOrderItems.length}
-        </div>
-      </div>
-    </lightning-accordion-section>
-    <lightning-accordion-section name="items" label={labels.order_items}>
-      <div style="max-height: 250px; overflow: auto">
-        <lightning-datatable
-          key-field="id"
-          data={purchaseOrderItems}
-          show-row-number-column
-          columns={columns}
+    <lightning-accordion
+      active-section-name={activeSections}
+      allow-multiple-sections-open
+    >
+      <lightning-accordion-section name="details" label={labels.order_details}>
+        <div
+          class="slds-var-p-horizontal_large slds-grid slds-wrap slds-gutters"
         >
-        </lightning-datatable>
-      </div>
-    </lightning-accordion-section>
-  </lightning-accordion>
+          <div class="slds-col slds-size_1-of-2">
+            <strong>{labels.order_name} : </strong>{purchaseOrderData.label}
+          </div>
+          <div class="slds-col slds-size_1-of-2">
+            <strong>{labels.order_status} : </strong>{purchaseOrderData.status}
+          </div>
+          <div class="slds-col slds-size_1-of-2">
+            <strong>{labels.order_total_amount} : </strong
+            >{purchaseOrderData.orderPrice}
+          </div>
+          <div class="slds-col slds-size_1-of-2">
+            <strong>{labels.number_of_products} : </strong
+            >{purchaseOrderItems.length}
+          </div>
+        </div>
+      </lightning-accordion-section>
+      <lightning-accordion-section name="items" label={labels.order_items}>
+        <div style="max-height: 250px; overflow: auto">
+          <lightning-datatable
+            key-field="id"
+            data={purchaseOrderItems}
+            show-row-number-column
+            hide-checkbox-column
+            columns={columns}
+          >
+          </lightning-datatable>
+        </div>
+      </lightning-accordion-section>
+    </lightning-accordion>
+  </div>
 </template>
