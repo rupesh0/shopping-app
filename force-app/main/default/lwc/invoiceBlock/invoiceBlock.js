@@ -1,70 +1,105 @@
-import { LightningElement, track } from 'lwc';
-import placeOrder from "@salesforce/apex/ShoppingCartControllerLightning.placeOrder";
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import pubsub from "c/pubsub";
-const fields = [
-    { label: 'Product Name ', fieldName: 'Name', sortable : true },
-    { label: 'Product Code', fieldName: 'ProductCode', sortable : true },
-    { label: 'Price Per Unit', fieldName: 'PricePerUnit__c', sortable : true },
-    { label: 'Quantity', fieldName: 'Quantity', sortable : true },
-    { label: 'Total', fieldName: 'Total', sortable : true }
-    ];
+import { api, wire, LightningElement } from "lwc";
+import { ShowToastEvent } from "lightning/platformShowToastEvent";
+import {
+  getFieldDisplayValue,
+  getFieldValue,
+  getRecord
+} from "lightning/uiRecordApi";
+import { getRelatedListRecords } from "lightning/uiRelatedListApi";
+
+import { PURCHASE_ORDER_ITEM_FIELDS, PURCHASE_ORDER_FIELDS } from "./schema";
 
 export default class InvoiceBlock extends LightningElement {
-    @track selectedProducts = [];
-    fields = fields;
-    sortBy;
-    sortDirection;
-    totalPrice = 0;
-    @track cartMapObj;
-    connectedCallback(){
-        pubsub.register('setProductsInInvoice', this.setSelectedProducts.bind(this));
-        pubsub.fire('getProductsInInvoice', {});
+  @api recordId;
+
+  purchaseOrderData = {};
+  purchaseOrderItems = [];
+  activeSections = ["details", "items"];
+  columns = [
+    { label: "Name", fieldName: "name", type: "text" },
+    { label: "Product Name", fieldName: "productName", type: "text" },
+    { label: "Quantity", fieldName: "quantity", type: "number" },
+    { label: "Price Per Unit", fieldName: "pricePerUnit", type: "currency" }
+  ];
+
+  @wire(getRecord, {
+    recordId: "$recordId",
+    fields: Object.values(PURCHASE_ORDER_FIELDS)
+  })
+  wiredRecord({ error, data }) {
+    if (error) {
+      let message = this.labels.common_label_unknown_error;
+      if (Array.isArray(error.body)) {
+        message = error.body.map((e) => e.message).join(", ");
+      } else if (typeof error.body.message === "string") {
+        message = error.body.message;
+      }
+      this.dispatchEvent(
+        new ShowToastEvent({
+          message,
+          variant: "error"
+        })
+      );
+    } else if (data) {
+      this.purchaseOrderData = {
+        label: getFieldValue(data, PURCHASE_ORDER_FIELDS.name),
+        id: this.recordId,
+        status: getFieldDisplayValue(data, PURCHASE_ORDER_FIELDS.status),
+        orderPrice: getFieldValue(data, PURCHASE_ORDER_FIELDS.price)
+      };
     }
-    setSelectedProducts = function(allProducts){
-        this.selectedProducts = allProducts['products'];
-        this.totalPrice = 0;
-        this.selectedProducts.forEach(product => {
-            product['Total'] = product['Quantity'] * product['PricePerUnit__c'];
-            this.totalPrice += product['Total'];
-        });
+  }
+
+  @wire(getRelatedListRecords, {
+    parentRecordId: "$recordId",
+    relatedListId: "PurchaseOrderLineItems__r",
+    fields: [
+      "PurchaseOrderLineItems__c.Id",
+      "PurchaseOrderLineItems__c.Name",
+      "PurchaseOrderLineItems__c.quantity__c",
+      "PurchaseOrderLineItems__c.Product__r.PricePerUnit__c",
+      "PurchaseOrderLineItems__c.Product__r.Name"
+    ],
+    pageSize: 1999
+  })
+  listInfo({ error, data }) {
+    if (data) {
+      this.purchaseOrderItems = data.records.map((record) => {
+        return {
+          id: record.id,
+          name: getFieldValue(record, PURCHASE_ORDER_ITEM_FIELDS.name),
+          quantity: getFieldValue(record, PURCHASE_ORDER_ITEM_FIELDS.quantity),
+          productName: getFieldValue(
+            record,
+            PURCHASE_ORDER_ITEM_FIELDS.productName
+          ),
+
+          pricePerUnit: getFieldValue(record, PURCHASE_ORDER_ITEM_FIELDS.price)
+        };
+      });
+
+      console.log(this.purchaseOrderItems, data);
+    } else if (error) {
+      this.dispatchEvent(
+        new ShowToastEvent({
+          message: error,
+          variant: "error"
+        })
+      );
     }
-    handleSortResult =  function(event) {
-        this.sortBy = event.detail.fieldName;
-        this.sortDirection = event.detail.sortDirection;
-        let isReverse = this.sortDirection === 'asc' ? 1 : -1;
-        let sortResult = Object.assign([], this.selectedProducts);
-        this.selectedProducts =  sortResult.sort( (a,b) => {
-            if(a[this.sortBy] > b[this.sortBy]){
-              return isReverse ;
-            }else{
-              return -1*isReverse ;
-            }
-        });
-    }
-    placeOrder = function(){
-        this.cartMapObj = {};
-        this.selectedProducts.forEach(product => {
-            this.cartMapObj[product.Id] = product['Quantity'] ;
-        });
-        placeOrder({ cartMap : this.cartMapObj })
-          .then(result => {
-              const event = new ShowToastEvent({
-                  title: 'Congratulation',
-                  message: 'Your Order has been Placed',
-                  variant: 'success'
-              });
-              this.dispatchEvent(event);
-              window.close();          
-          })
-          .catch(error => {
-            const event = new ShowToastEvent({
-                title: 'Soory',
-                message: 'Error Occure While Placing Order'+ error,
-                variant: 'error'
-            });
-            this.dispatchEvent(event);
-            window.close();
-        });
-    }
+  }
+
+  get labels() {
+    return {
+      order_summary: "Order Summary",
+      common_label_x_items: "{0} items",
+      common_label_unknown_error: "Unknown error",
+      order_details: "Order Details",
+      order_items: "Order Items",
+      order_name: "Order Name",
+      order_status: "Order Status",
+      order_total_amount: "Total Amount",
+      number_of_products: "Number of Products"
+    };
+  }
 }
