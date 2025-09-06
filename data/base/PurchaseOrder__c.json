@@ -1,0 +1,38 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "PurchaseOrder__c",
+        "referenceId": "OrderRef1"
+      },
+      "OrderPrice__c": 2580,
+      "OrderStatus__c": "Pending"
+    },
+    {
+      "attributes": {
+        "type": "PurchaseOrder__c",
+        "referenceId": "OrderRef2"
+      },
+
+      "OrderPrice__c": 5500,
+      "OrderStatus__c": "Shipped"
+    },
+    {
+      "attributes": {
+        "type": "PurchaseOrder__c",
+        "referenceId": "OrderRef3"
+      },
+
+      "OrderPrice__c": 100,
+      "OrderStatus__c": "Delivered"
+    },
+    {
+      "attributes": {
+        "type": "PurchaseOrder__c",
+        "referenceId": "OrderRef4"
+      },
+      "OrderPrice__c": 2440,
+      "OrderStatus__c": "Cancelled"
+    }
+  ]
+}

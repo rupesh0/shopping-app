@@ -1,0 +1,134 @@
+{
+  "records": [
+    {
+      "attributes": {
+        "type": "Product2",
+        "referenceId": "ProductRef1"
+      },
+      "Name": " Samsung Galaxy S24 Ultra",
+      "Description": "A premium smartphone featuring a 200MP camera, S Pen functionality for notes and drawing, and a high-quality build. ",
+      "ProductCode": "TP001",
+      "IsActive": true,
+      "Family": "None",
+      "PricePerUnit__c": 1200.0,
+      "QuantityAvailable__c": 50
+    },
+    {
+      "attributes": {
+        "type": "Product2",
+        "referenceId": "ProductRef2"
+      },
+      "Name": "Apple iPhone 15 Pro Max",
+      "Description": "A flagship smartphone with a 5x telephoto zoom camera, titanium design for durability, and advanced performance features.",
+      "ProductCode": "TP002",
+      "IsActive": true,
+      "Family": "None",
+      "PricePerUnit__c": 100.0,
+      "QuantityAvailable__c": 5
+    },
+    {
+      "attributes": {
+        "type": "Product2",
+        "referenceId": "ProductRef3"
+      },
+      "Name": "Google Pixel 8 Pro",
+      "Description": "A high-end smartphone with a 5x telephoto zoom camera, Tensor G3 chip for enhanced AI capabilities, and a sleek design.",
+      "ProductCode": "TP003",
+      "IsActive": true,
+      "Family": "None",
+      "PricePerUnit__c": 90.0,
+      "QuantityAvailable__c": 1
+    },
+    {
+      "attributes": {
+        "type": "Product2",
+        "referenceId": "ProductRef4"
+      },
+      "Name": "OnePlus 11",
+      "Description": "A flagship smartphone with a Hasselblad-tuned camera system, Snapdragon 8 Gen 2 processor for top performance, and fast charging capabilities.",
+      "ProductCode": "TP004",
+      "IsActive": true,
+      "Family": "None",
+      "PricePerUnit__c": 10.0,
+      "QuantityAvailable__c": 4
+    },
+    {
+      "attributes": {
+        "type": "Product2",
+        "referenceId": "ProductRef5"
+      },
+      "Name": "Sony Xperia 1 IV",
+      "Description": "A premium smartphone with a 5x telephoto zoom camera, 4K OLED display for stunning visuals, and advanced audio features.",
+      "ProductCode": "TP005",
+      "IsActive": true,
+      "Family": "None",
+      "PricePerUnit__c": 1200.0,
+      "QuantityAvailable__c": 8
+    },
+    {
+      "attributes": {
+        "type": "Product2",
+        "referenceId": "ProductRef6"
+      },
+      "Name": "Xiaomi 13 Pro",
+      "Description": "A high-end smartphone with a Leica-tuned camera system, Snapdragon 8 Gen 2 processor for excellent performance, and fast charging capabilities.",
+      "ProductCode": "TP006",
+      "IsActive": true,
+      "Family": "None",
+      "PricePerUnit__c": 110.0,
+      "QuantityAvailable__c": 0
+    },
+    {
+      "attributes": {
+        "type": "Product2",
+        "referenceId": "ProductRef7"
+      },
+      "Name": "Oppo Find X6 Pro",
+      "Description": "A flagship smartphone with a 5x telephoto zoom camera, Snapdragon 8 Gen 2 processor for top performance, and a sleek design.",
+      "ProductCode": "TP007",
+      "IsActive": true,
+      "Family": "None",
+      "PricePerUnit__c": 30.0,
+      "QuantityAvailable__c": 3
+    },
+    {
+      "attributes": {
+        "type": "Product2",
+        "referenceId": "ProductRef8"
+      },
+      "Name": "Asus ROG Phone 7",
+      "Description": "A gaming smartphone with a high-refresh-rate display, Snapdragon 8 Gen 2 processor for excellent performance, and advanced cooling technology.",
+      "ProductCode": "TP008",
+      "IsActive": true,
+      "Family": "None",
+      "PricePerUnit__c": 90.0,
+      "QuantityAvailable__c": 5
+    },
+    {
+      "attributes": {
+        "type": "Product2",
+        "referenceId": "ProductRef9"
+      },
+      "Name": "Motorola Edge 40 Pro",
+      "Description": "A premium smartphone with a 200MP camera, Snapdragon 8 Gen 2 processor for top performance, and a sleek design.",
+      "ProductCode": "TP009",
+      "IsActive": true,
+      "Family": "None",
+      "PricePerUnit__c": 620.0,
+      "QuantityAvailable__c": 10
+    },
+    {
+      "attributes": {
+        "type": "Product2",
+        "referenceId": "ProductRef10"
+      },
+      "Name": "Vivo X90 Pro+",
+      "Description": "A high-end smartphone with a Zeiss-tuned camera system, Snapdragon 8 Gen 2 processor for excellent performance, and fast charging capabilities.",
+      "ProductCode": "TP010",
+      "IsActive": true,
+      "Family": "None",
+      "PricePerUnit__c": 120.0,
+      "QuantityAvailable__c": 20
+    }
+  ]
+}
