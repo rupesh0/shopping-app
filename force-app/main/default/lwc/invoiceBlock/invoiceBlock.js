@@ -16,10 +16,14 @@ export default class InvoiceBlock extends LightningElement {
   purchaseOrderItems = [];
   activeSections = ["details", "items"];
   columns = [
-    { label: "Name", fieldName: "name", type: "text" },
-    { label: "Product Name", fieldName: "productName", type: "text" },
-    { label: "Quantity", fieldName: "quantity", type: "number" },
-    { label: "Price Per Unit", fieldName: "pricePerUnit", type: "currency" }
+    { label: this.labels.common_label_name, fieldName: "name", type: "text" },
+    { label: this.labels.product_name, fieldName: "productName", type: "text" },
+    { label: this.labels.quantity, fieldName: "quantity", type: "number" },
+    {
+      label: this.labels.price_per_unit,
+      fieldName: "pricePerUnit",
+      type: "currency"
+    }
   ];
 
   @wire(getRecord, {
@@ -99,7 +103,11 @@ export default class InvoiceBlock extends LightningElement {
       order_name: "Order Name",
       order_status: "Order Status",
       order_total_amount: "Total Amount",
-      number_of_products: "Number of Products"
+      number_of_products: "Number of Products",
+      common_label_name: "Name",
+      product_name: "Product Name",
+      quantity: "Quantity",
+      price_per_unit: "Price Per Unit"
     };
   }
 }
