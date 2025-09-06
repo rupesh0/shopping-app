@@ -11,7 +11,8 @@
           class="slds-var-p-horizontal_large slds-grid slds-wrap slds-gutters"
         >
           <div class="slds-col slds-size_1-of-2">
-            <strong>{labels.order_name} : </strong>{purchaseOrderData.label}
+            <strong>{labels.order_name} : </strong>
+            <a href={purchaseOrderData.link}> {purchaseOrderData.label}</a>
           </div>
           <div class="slds-col slds-size_1-of-2">
             <strong>{labels.order_status} : </strong>{purchaseOrderData.status}

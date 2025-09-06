@@ -16,8 +16,18 @@ export default class InvoiceBlock extends LightningElement {
   purchaseOrderItems = [];
   activeSections = ["details", "items"];
   columns = [
-    { label: this.labels.common_label_name, fieldName: "name", type: "text" },
-    { label: this.labels.product_name, fieldName: "productName", type: "text" },
+    {
+      label: this.labels.common_label_name,
+      fieldName: "nameUrl",
+      type: "url",
+      typeAttributes: { label: { fieldName: "name" }, target: "_blank" }
+    },
+    {
+      label: this.labels.product_name,
+      fieldName: "productNameUrl",
+      type: "url",
+      typeAttributes: { label: { fieldName: "productName", target: "_blank" } }
+    },
     { label: this.labels.quantity, fieldName: "quantity", type: "number" },
     {
       label: this.labels.price_per_unit,
@@ -49,7 +59,8 @@ export default class InvoiceBlock extends LightningElement {
         label: getFieldValue(data, PURCHASE_ORDER_FIELDS.name),
         id: this.recordId,
         status: getFieldDisplayValue(data, PURCHASE_ORDER_FIELDS.status),
-        orderPrice: getFieldValue(data, PURCHASE_ORDER_FIELDS.price)
+        orderPrice: getFieldValue(data, PURCHASE_ORDER_FIELDS.price),
+        link: "/" + this.recordId
       };
     }
   }
@@ -57,13 +68,9 @@ export default class InvoiceBlock extends LightningElement {
   @wire(getRelatedListRecords, {
     parentRecordId: "$recordId",
     relatedListId: "PurchaseOrderLineItems__r",
-    fields: [
-      "PurchaseOrderLineItems__c.Id",
-      "PurchaseOrderLineItems__c.Name",
-      "PurchaseOrderLineItems__c.quantity__c",
-      "PurchaseOrderLineItems__c.Product__r.PricePerUnit__c",
-      "PurchaseOrderLineItems__c.Product__r.Name"
-    ],
+    fields: Object.values(PURCHASE_ORDER_ITEM_FIELDS).map(
+      (field) => field.objectApiName + "." + field.fieldApiName
+    ),
     pageSize: 1999
   })
   listInfo({ error, data }) {
@@ -71,8 +78,11 @@ export default class InvoiceBlock extends LightningElement {
       this.purchaseOrderItems = data.records.map((record) => {
         return {
           id: record.id,
+          nameUrl: "/" + record.id,
           name: getFieldValue(record, PURCHASE_ORDER_ITEM_FIELDS.name),
           quantity: getFieldValue(record, PURCHASE_ORDER_ITEM_FIELDS.quantity),
+          productNameUrl:
+            "/" + getFieldValue(record, PURCHASE_ORDER_ITEM_FIELDS.productId),
           productName: getFieldValue(
             record,
             PURCHASE_ORDER_ITEM_FIELDS.productName
