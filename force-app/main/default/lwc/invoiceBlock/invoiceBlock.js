@@ -81,8 +81,6 @@ export default class InvoiceBlock extends LightningElement {
           pricePerUnit: getFieldValue(record, PURCHASE_ORDER_ITEM_FIELDS.price)
         };
       });
-
-      console.log(this.purchaseOrderItems, data);
     } else if (error) {
       this.dispatchEvent(
         new ShowToastEvent({
