@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "Salesforce App",
   "scripts": {
+    "prepare": "node scripts/node/prepareSetup/start.js",
     "start": "node scripts/node/orgSetup/start.js",
     "lint": "eslint **/{aura,lwc}/**/*.js",
     "test": "npm run test:unit",
