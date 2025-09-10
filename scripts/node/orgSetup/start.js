@@ -8,7 +8,7 @@ const {
 (async () => {
   try {
     console.log("⚡ Starting Scratch Org Setup...\n");
-    //   await createScratchOrg();
+    await createScratchOrg();
     await deployCode();
     await assignPermissionSets();
     await importData();

@@ -21,7 +21,8 @@ async function createScratchOrg() {
 
     console.log("✅ Scratch Org created");
   } catch (err) {
-    console.error("❌ Failed to create scratch org:", err);
+    console.error("❌ Failed to create scratch org.");
+    throw new Error(err);
   }
 }
 
@@ -38,7 +39,8 @@ async function deployCode() {
 
     console.log("✅ Code deployed");
   } catch (err) {
-    console.error("❌ Failed to deploy code:", err);
+    console.error("❌ Failed to deploy code.");
+    throw new Error(err);
   }
 }
 
@@ -55,7 +57,8 @@ async function assignPermissionSets() {
 
     console.log(`✔ Assigned permission sets`);
   } catch (err) {
-    console.error("❌ Failed to assign permission sets:", err);
+    console.error("❌ Failed to assign permission sets.");
+    throw new Error(err);
   }
 }
 
@@ -72,7 +75,8 @@ async function importData() {
 
     console.log("✅ Data imported");
   } catch (err) {
-    console.error("❌ Failed to import data:", err);
+    console.error("❌ Failed to import data.");
+    throw new Error(err);
   }
 }
 
