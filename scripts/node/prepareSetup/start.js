@@ -1,6 +1,9 @@
+const { createMetaDataFiles } = require("./createMetaData/createMetaDataFiles");
+
 (async () => {
   try {
     console.log("⚡ Starting Setup...\n");
+    await createMetaDataFiles();
 
     console.log("\n🎉 Setup completed successfully!");
   } catch (err) {
