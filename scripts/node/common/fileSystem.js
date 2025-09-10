@@ -24,8 +24,37 @@ const findFiles = async (sourceDirectories, options) => {
     });
   }
 
+  if (findDown) {
+    await findDownInDirectories(sourceDirectories, files, {
+      extensions,
+      excludedDirectories,
+      recursion: true
+    });
+  }
+
   return files;
 };
+
+async function findDownInDirectories(directories, files, options) {
+  const childPaths = [];
+
+  const promises = directories.map(async (dir) => {
+    const fullPath = path.resolve(dir);
+    const dirFiles = await fs.readdir(fullPath, { withFileTypes: true });
+    dirFiles.forEach((dirFile) => {
+      if (dirFile.isDirectory()) {
+        childPaths.push(path.join(fullPath, dirFile.name));
+      }
+    });
+    return Promise.resolve();
+  });
+
+  await Promise.all(promises);
+
+  if (childPaths.length) {
+    await findInDirectories(childPaths, files, options);
+  }
+}
 
 async function findInDirectories(directories, files, options) {
   const promises = directories.map((dir) =>
@@ -100,7 +129,9 @@ async function handleFile(dirFile, parentPath, files, options) {
   console.log(
     await findFiles([".", "data"], {
       extensions: [".js", ".json"],
-      excludedDirectories: ["."]
+      excludedDirectories: ["node_modules"],
+      findDown: true,
+      findCurrent: true
     })
   );
 })();
