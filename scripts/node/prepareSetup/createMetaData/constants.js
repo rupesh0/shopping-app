@@ -22,7 +22,7 @@ const META_DATA_DEFINATIONS = {
   [META_DATA_TYPES.LIGHTNING_WEB_COMPONENT]: {
     label: "Lightning Web Component",
     directory: "lwc",
-    suffix: "  .js",
+    suffix: ".js",
     metaSuffix: ".js-meta.xml",
     alwaysCreateMeta: false
   }
