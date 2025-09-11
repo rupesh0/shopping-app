@@ -32,6 +32,13 @@ const findFiles = async (sourceDirectories, options) => {
     });
   }
 
+  if (findUp) {
+    await findUpInDirectories(sourceDirectories, files, {
+      extensions,
+      excludedDirectories
+    });
+  }
+
   return files;
 };
 
@@ -54,6 +61,28 @@ async function findDownInDirectories(directories, files, options) {
   if (childPaths.length) {
     await findInDirectories(childPaths, files, options);
   }
+}
+
+async function findUpInDirectories(directories, files, options) {
+  const parentPaths = [];
+  const seen = new Set();
+
+  for (const dir of directories) {
+    let currentDir = path.resolve(dir);
+    while (currentDir && !seen.has(currentDir)) {
+      seen.add(currentDir);
+      parentPaths.push(currentDir);
+      currentDir = path.dirname(currentDir);
+    }
+  }
+
+  await findInDirectories(
+    parentPaths.filter(
+      (p) => !directories.some((d) => path.resolve(d) === path.resolve(p))
+    ),
+    files,
+    options
+  );
 }
 
 async function findInDirectories(directories, files, options) {
@@ -124,14 +153,6 @@ async function handleFile(dirFile, parentPath, files, options) {
   return Promise.resolve();
 }
 
-(async () => {
-  console.log("Testing findFiles function:");
-  console.log(
-    await findFiles([".", "data"], {
-      extensions: [".js", ".json"],
-      excludedDirectories: ["node_modules"],
-      findDown: true,
-      findCurrent: true
-    })
-  );
-})();
+module.exports = {
+  findFiles
+};
